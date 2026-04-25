@@ -1,0 +1,6 @@
+{
+  "name": "APT for Windows",
+  "description": "A powerful PowerShell-based package manager simulation for Windows that allows script bundling, execution, and GUI-based management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
