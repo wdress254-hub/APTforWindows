@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Terminal, Download, Shield, Zap, Box, Code, Trash2, Edit3, Save, Play, ExternalLink, Github, Info } from 'lucide-react';
+import { Terminal, Download, Shield, Zap, Box, Code, Trash2, Edit3, Save, Play, ExternalLink, Github, Info, Globe } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function App() {
@@ -42,8 +42,10 @@ export default function App() {
       .catch(err => console.error('Script fetch failed:', err));
   }, []);
 
-  // Simple and clean command.
-  const installCommand = `irm "${realOrigin}/install-apt" | iex`;
+  const [githubUrl, setGithubUrl] = useState('https://raw.githubusercontent.com/wdress254-hub/APTforWindows/main/apt-installer.ps1');
+
+  // One-liner points to GitHub for public reliability
+  const installCommand = `irm "${githubUrl}" | iex`;
 
   const downloadScript = async () => {
     try {
@@ -187,6 +189,49 @@ export default function App() {
             )}
             
             <div className="mt-8 flex flex-col items-center gap-4">
+              <div className="flex flex-col items-center gap-2 w-full max-w-md">
+                <div className="flex justify-between w-full px-1">
+                  <label className="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Public GitHub Link (Raw)</label>
+                  <a 
+                    href="https://github.com/wdress254-hub/APTforWindows" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="text-[10px] text-blue-500 hover:underline flex items-center gap-1"
+                  >
+                    Manage Repository <ExternalLink size={10} />
+                  </a>
+                </div>
+                <div className="relative w-full">
+                  <input 
+                    type="text"
+                    value={githubUrl}
+                    onChange={(e) => setGithubUrl(e.target.value)}
+                    className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2 text-xs font-mono text-blue-400 focus:outline-none focus:border-blue-500/50 transition-colors"
+                  />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                    <button 
+                      onClick={() => setGithubUrl('https://raw.githubusercontent.com/wdress254-hub/APTforWindows/main/apt-installer.ps1')}
+                      className="text-[9px] px-1.5 py-0.5 bg-gray-800 hover:bg-gray-700 rounded text-gray-400"
+                    >
+                      Reset
+                    </button>
+                    <Globe size={12} className="text-gray-600" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="px-4 py-4 bg-blue-500/5 border border-blue-500/10 rounded-xl w-full max-w-md">
+                <h4 className="text-xs font-bold text-blue-400 mb-2 flex items-center gap-2">
+                  <Github size={14} /> Fixing the 404 & Setting up GitHub
+                </h4>
+                <ol className="text-[11px] text-gray-400 space-y-2 list-decimal list-inside">
+                  <li>Go to your repo and click <b>"Add file"</b> &gt; <b>"Create new file"</b></li>
+                  <li>Name it <b>apt-installer.ps1</b></li>
+                  <li>Paste the code from the <b>'Manual Code'</b> tab above</li>
+                  <li>Click <b>"Commit changes"</b></li>
+                </ol>
+              </div>
+
               <div className="flex items-center gap-4">
                 <p className="text-sm text-gray-500 flex items-center gap-2">
                   <Shield size={14} className="text-blue-500" /> Run PowerShell as Administrator
@@ -199,16 +244,10 @@ export default function App() {
                   <Download size={14} /> Download .ps1
                 </button>
               </div>
-              {window.location.hostname.includes('ais-pre') && (
-                <div className="px-4 py-3 bg-amber-500/5 border border-amber-500/20 rounded-xl max-w-xl">
-                  <p className="text-xs text-amber-400 leading-relaxed text-center font-medium">
-                    <Info size={14} className="inline mr-1" /> <strong>Shared Preview Mode:</strong> PowerShell may be blocked by the Google Login gate. Use <b>Manual Code</b> if the one-liner fails.
-                  </p>
-                </div>
-              )}
-              <div className="px-4 py-3 bg-red-500/5 border border-red-500/10 rounded-lg max-w-xl">
-                 <p className="text-xs text-red-500/60 leading-relaxed text-center">
-                   If you see errors like <b>'display: flex'</b>, it confirms the URL is private. Copy the code from the <b>'Manual Code'</b> tab instead.
+              <div className="px-4 py-3 bg-blue-500/5 border border-blue-500/10 rounded-lg max-w-xl">
+                 <p className="text-xs text-blue-400 leading-relaxed text-center">
+                   <strong>Public One-Liner:</strong> Using a public GitHub Raw URL (above) allows the installer to bypass login gates. 
+                   Ensure your script is uploaded to that location.
                  </p>
               </div>
             </div>
